@@ -1,5 +1,5 @@
-%w-frequency
-%z-dampling
+%w-½ÇÆµÂÊ
+%z-×èÄá±È
 %lon
 [V,R_lon]=eig(A_lon);
 R_lon=diag(R_lon);
@@ -23,9 +23,8 @@ i=2;
 Tr=-log(2)/real(R_lat(i));%<1.0
 %dutch roll
 i=4;
-wdr=abs(R_lat(i));      %>1.0
-zdr=-real(R_lat(i))/wdr;%>0.08
-wzdr=wdr*zdr;           %>0.15
+wdr=abs(R_lat(i));
+zdr=-real(R_lat(i))/wdr;  %
 %sprial
 i=3;
-Ts=log(2)/real(R_lat(i));%>20
+Ts=log(2)/real(R_lat(i));
