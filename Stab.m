@@ -12,3 +12,5 @@ gain=place(A_lon,B_stab,R_dsr);
 gain(1)=0;
 A_lon_stab=A_lon-B_stab*gain;
 A_stab=[A_lon_stab,zeros(4,5);zeros(5,4),A_lat];
+[~,R_lon_stab]=eig(A_lon_stab);
+R_lon_stab=diag(R_lon_stab);

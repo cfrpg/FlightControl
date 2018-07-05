@@ -1,0 +1,14 @@
+nums=zeros(4,6);
+dens=zeros(4,6);
+[num,den]=ss2tf(A_lon_stab,B_lon,eye(4),zeros(4,2),1);
+dens(1,2:6)=den;
+nums(1,2:6)=num(4,:);
+[num,den]=ss2tf(A_lon_stab,B_lon,eye(4),zeros(4,2),2);
+nums(4,2:6)=num(1,:);
+dens(4,2:6)=den;
+[num,den]=ss2tf(A_lat,B_lat,eye(5),zeros(5,2),1);
+nums(2,:)=num(4,:);
+dens(2,:)=den;
+[num,den]=ss2tf(A_lat,B_lat,eye(5),zeros(5,2),2);
+nums(3,:)=num(1,:);
+dens(3,:)=den;
