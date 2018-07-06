@@ -12,3 +12,8 @@ dens(2,:)=den;
 [num,den]=ss2tf(A_lat,B_lat,eye(5),zeros(5,2),2);
 nums(3,:)=num(1,:);
 dens(3,:)=den;
+
+tf1=tf(nums(1,:),dens(1,:));
+tf2=tf(nums(2,:),dens(2,:));
+tf3=tf(nums(3,:),dens(3,:));
+tf4=tf(nums(4,:),dens(4,:));
