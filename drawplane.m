@@ -9,11 +9,11 @@ function drawplane(ps)
     
     persistent hplane;
     persistent hcontrol;
-    scale=2000;  %plane scale
-    field=1000;  %field scale
+    scale=3000;  %plane scale
+    field=10000;  %field scale
     [Vplane,Fplane,Cplane]=planemodel;
     Vplane=Vplane*scale;   
-    Vplane=transform(Vplane',phi,theta,psi,pn,pe,pd);
+    Vplane=transform(Vplane',phi,theta,psi,pn,pe,-pd);
    
     R=[        
         0 1 0;

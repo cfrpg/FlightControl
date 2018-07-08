@@ -1,11 +1,11 @@
-PID.P_de_theta=1.5;
+PID.P_de_theta=10;
 PID.I_de_theta=0;
-PID.D_de_theta=0.3;
-PID.K_theta=0.6; %DC gain
+PID.D_de_theta=3;
+PID.K_theta=0.4657; %DC gain
 
-PID.P_h_de=0.3;
+PID.P_h_de=0.1;
 PID.I_h_de=0;
-PID.D_h_de=0.1;
+PID.D_h_de=0;
 
 PID.P_da_phi=0.4;
 PID.I_da_phi=0;

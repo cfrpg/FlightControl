@@ -36,7 +36,7 @@ function [sys,X0,str,ts,simStateCompliance]=mdlInitializeSizes(P)
     simStateCompliance = 'UnknownSimState';
 end
 
-function sys=mdlDerivatives(t,x,uu,P)
+function sys=mdlDerivatives(t,x,uu)
     u=uu(1);
     w=uu(2);
     q=uu(3);
@@ -46,7 +46,7 @@ function sys=mdlDerivatives(t,x,uu,P)
     r=uu(7);
     phi=uu(8);
     psi=uu(9);
-    u=u+P.u0;
+    
     roll=[
         1 0 0;
         0 cos(phi) sin(phi);
@@ -65,7 +65,6 @@ function sys=mdlDerivatives(t,x,uu,P)
     pndot = res(1);    
     pedot = res(2); 
     pddot = res(3);
-    
     sys = [pndot; pedot; pddot];
 end
 

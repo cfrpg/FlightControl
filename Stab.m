@@ -9,7 +9,7 @@ R_dsr=[
     R_lon(4)];
 B_stab=B_lon(:,1);
 gain=place(A_lon,B_stab,R_dsr);
-gain(1)=0;
+%gain(1)=0;
 A_lon_stab=A_lon-B_stab*gain;
 A_stab=[A_lon_stab,zeros(4,5);zeros(5,4),A_lat];
 [~,R_lon_stab]=eig(A_lon_stab);
