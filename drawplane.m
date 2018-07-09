@@ -1,10 +1,10 @@
 function drawplane(ps)
-    pn      = ps(1);       % inertial North position     
-    pe      = ps(2);       % inertial East position
-    pd      = ps(3); 
-    phi     = ps(4);       % roll angle         
-    theta   = ps(5);       % pitch angle     
-    psi     = ps(6);       % yaw angle     
+    pn      = ps(4);       % inertial North position     
+    pe      = ps(5);       % inertial East position
+    pd      = ps(6); 
+    phi     = ps(1);       % roll angle         
+    theta   = ps(2);       % pitch angle     
+    psi     = ps(3);       % yaw angle     
    t=ps(7);
     
     persistent hplane;
