@@ -29,9 +29,9 @@ function out=GetPosition(x,P)
     pedot = res(2); 
     pddot = res(3);
     chi=atan2(pedot,pndot);
-    if chi<-0.1*pi
-        chi=chi+2*pi;
-    end
+%     if chi<-0.1*pi
+%         chi=chi+2*pi;
+%     end
     Vg=norm([pndot;pedot]);
     out=[pndot;pedot;pddot;Va;chi;Vg];    
 end

@@ -9,7 +9,7 @@ function drawplane(ps)
     
     persistent hplane;
     persistent hcontrol;
-    scale=3000;  %plane scale
+    scale=5000;  %plane scale
     field=10000;  %field scale
     [Vplane,Fplane,Cplane]=planemodel;
     Vplane=Vplane*scale;   
