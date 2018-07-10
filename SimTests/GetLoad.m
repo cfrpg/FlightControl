@@ -1,0 +1,20 @@
+function res=GetLoad(x,P)
+    phi=x(1);
+    theta=x(2);
+    psi=x(3);
+    du=x(4);
+    dv=x(5);
+    dw=x(6);    
+    R=[cos(theta)*cos(psi),sin(phi)*sin(theta)*cos(psi)-cos(phi)*sin(psi),sin(phi)*sin(psi)+cos(phi)*sin(theta)*cos(psi);
+        cos(theta)*sin(psi),sin(phi)*sin(theta)*sin(psi)+cos(phi)*cos(psi),cos(phi)*sin(theta)*sin(psi)-sin(phi)*cos(psi);
+        -sin(theta),sin(phi)*cos(theta),cos(phi)*cos(theta)];
+    %g=[0;0;9.8];
+    %g=R*g;
+    %res=-([du;dv;dw]-g)/9.8;
+    g=9.8;
+    res=[du;
+        dv;
+        2*g-dw-g*cos(phi)*cos(theta)];
+    %res=[du;dv;dw];
+    res=res/g;
+end
