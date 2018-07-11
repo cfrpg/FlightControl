@@ -1,10 +1,10 @@
 w_des=6;
-z_des=0.6;
-r=z_des*w_des;
-s=sqrt(w_des^2-r^2);
+z_des=0.707;
+r1=z_des*w_des;
+s1=sqrt(w_des^2-r1^2);
 R_dsr=[
-    -r+s*1i;
-    -r-s*1i;
+    -r1+s1*1i;
+    -r1-s1*1i;
     R_lon(3);
     R_lon(4)];
 B_stab=B_lon(:,1);
