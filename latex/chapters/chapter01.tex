@@ -107,7 +107,7 @@ $$
 \label{rl}
 \end{figure}
 
-若要使短周符合一级飞行品质标准，短周期频率至少为$\sqrt{0.085\d n/\d\alpha}=1.57$。
+若要使短周期符合一级飞行品质标准，短周期频率至少为$\sqrt{0.085\d n/\d\alpha}=1.57$。
 从根轨迹图中可以看出，代表短周期的一支根轨迹完全处于范围之外，因此无法使用单一变量反馈来实现增稳。
 因此采用全状态反馈的方法进行增稳。
 
@@ -118,18 +118,108 @@ $$R'=-4.2420\pm4.2433i$$
 将纵向状态$[\Delta U,\Delta W,q,\Delta\theta]^T$反馈到升降舵$\de$，使用place函数进行极点配置，
 短周期极点为$R'$，长周期极点不变，得到反馈增益
 $$\mvK=[0.0045,-0.0085,-0.3567,0.0328]^T$$
+增加反馈后的状态矩阵
+$$\mma_{\text{lon,st}}=\mma_{\text{lon}}-\mmb_{\text{lon}}\mvK$$
 控制结构如下图所示。
+\begin{figure}[!h]
+\centering\includegraphics[width=0.8\textwidth]{lonmdl.png}
+\caption{纵向增稳系统框图}
+\label{lm}
+\end{figure}
 
-【图】
+控制增稳后的根轨迹如下图所示。
+\begin{figure}[!h]
+\centering\includegraphics[width=0.8\textwidth]{rlst.png}
+\caption{增稳后的$\de-\theta$的根轨迹}
+\label{rlst}
+\end{figure}
 
-控制增稳后的根轨迹如下图所示
+\clearpage
+\subsection{扰动响应仿真}
+对增稳前后的纵向系统输入$\alpha_0=5\degree$的初值，测试其对迎角扰动的响应，结果如图所示。
 
+从仿真结果可以看出，增稳前短周期的周期很长，且阻尼不足，增稳后有明显改善。
+\begin{figure}[!h]
+\centering\includegraphics[width=1.1\textwidth]{lon.png}
+\caption{增稳前迎角扰动响应}
+\label{course}
+\end{figure}
+\begin{figure}[!h]
+\centering\includegraphics[width=1.1\textwidth]{lonst.png}
+\caption{增稳后迎角扰动响应}
+\label{course}
+\end{figure}
+\clearpage
+对横航向系统输入$\beta_0=5\degree$的初值，测试其对侧滑角扰动的响应，结果如图所示。
+\begin{figure}[!h]
+\centering\includegraphics[width=1.1\textwidth]{lat.png}
+\caption{侧滑角扰动响应}
+\label{course}
+\end{figure}
 \clearpage
 \section{自动飞行仿真}
 \subsection{自动导航控制系统}
+自动导航控制分为指令部分和控制部分。
+指令部分根据飞机当前位置判断飞行阶段，发出飞机高度，速度和航向的指令$P^c$;
+控制部分根据指令和飞机状态进行反馈控制，计算出合适的操纵量$\bm{\delta}$;
+飞机动力学模型根据操纵量计算出飞机状态向量$\mvx$，反馈到指令和控制部分。
+总体结构如下图所示。
+\begin{figure}[!h]
+\centering\includegraphics[width=0.8\textwidth]{apmdl.png}
+\caption{自动飞行原理框图}
+\label{apmdl}
+\end{figure}
+
+\subsubsection{飞行指令部分}
+飞行指令使用有限状态机实现。
+将整个飞行过程分为若干的阶段，每个阶段作为一个状态，每一个状态发出固定的指令，当飞机完成一个飞行阶段后转移到下一个状态。
+状态转移通过反馈的高度$H$，速度$Va$，航向$\chi$和当前阶段已经飞行的距离$x$判断。
+飞行状态机的状态及转移条件如下图所示。
+\begin{figure}[!h]
+\centering\includegraphics[width=0.95\textwidth]{apsm.png}
+\caption{指令状态机}
+\label{apsm}
+\end{figure}
+
+\subsubsection{飞行控制部分}
+飞行控制使用串级PID控制实现。
+控制系统分为内外两环，外环进行位置控制，控制飞机的高度，速度及航向，输出期望的姿态；
+内环进行姿态控制，输出飞机的操纵量。
+侧滑角控制通过反馈侧向速度$v$控制，由于期望值始终为0（不考虑侧风飞行的情况），因此没有输入。
+
+飞机控制系统结构如下图所示。
+\begin{figure}[!h]
+\centering\includegraphics[width=0.97\textwidth]{clon.png}
+\caption{纵向控制系统}
+\label{clon}
+\end{figure}
+\begin{figure}[!h]
+\centering\includegraphics[width=0.97\textwidth]{clat.png}
+\caption{横航向控制系统}
+\label{clat}
+\end{figure}
+
+按照从内环到外环的顺序对每个控制器进行调参，调参时对期望值输入阶跃信号，通过调整PID增益使阶跃响应达到期望的水平。经过调参后的参数如下表所示。
+
+\begin{table}[!ht]
+\centering
+\caption{控制器参数}
+\label{pid}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+控制器 		& 输入 		& 输出 		& P		& I & D 	& 输出限幅 \\ \midrule
+高度控制 	& $H^c$ 	& $\theta^c$&0.0005	& 0	&0.03	& $\pm\pi/9$ \\
+俯仰角控制 	& $\theta^c$& $\de$		& 1		& 0	&0.4 	& $\pm\pi/9$ \\
+速度控制 	& $V^c$		& $\delta_T$		& 2		&0.001& 0.03& $\pm0.5$ \\
+航向控制 	& $\chi^c$	& $\phi^c$	& 1.5 	& 0	& 1.2 	& $\pm\pi/7$ \\
+滚转角控制 	& $\phi^c$	& $\da$		& 2 	& 0	& 0.1 	& $\pm\pi/9$ \\
+侧滑消除 	& 0 		& $\dr$		& 0.1 	& 0	& 0.1 	& $\pm\pi/9$ \\ \bottomrule
+\end{tabular}
+\end{table}
+
 \clearpage
 \subsection{自动飞行仿真}
-仿真使用的Simulink模型如下图所示。图中plane model模块为飞机的状态空间模型，Autopilot模块使用状态机，根据飞机的速度，高度和航向确定当前飞行阶段的期望值。
+仿真使用的Simulink模型如下图所示。图中plane model模块为飞机的状态空间模型，Autopilot模块为飞行指令状态机。
 仿真结果如图所示。飞机的迎角，侧滑角和三轴过载通过飞机的体轴系速度及姿态角算出。
 
 \begin{figure}[!h]
